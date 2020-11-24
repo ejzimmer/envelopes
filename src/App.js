@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { useSelector } from 'react-redux';
+
 import './App.css';
 
+import Modal from './Modal'
+import Envelopes from './Envelopes'
+import AddEnvelope from './AddEnvelope'
+import Toast from './Toast'
+import { signInWithGoogle } from '.'
+
 function App() {
+  const envelopes = useSelector(state => state.envelopes)
+  const toastMessage = useSelector(state => state.toastMessage)
+  const user = useSelector(state => state.user)
+
+  const isEnvelopes = envelopes && envelopes.length > 0
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <Modal />
+      {!user && <button className="login" onClick={signInWithGoogle}>log in with Google</button>}
+      {user && !isEnvelopes && <div style={{marginBottom: '40px'}}>Look, you're probably not allowed to see this data</div>}
+      {isEnvelopes && <Envelopes envelopes={envelopes} />}
+      <AddEnvelope />
+      <Toast message={toastMessage} />
+    </main>
   );
 }
 

@@ -1,13 +1,226 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  --grid-width: 40px;
+  --grid-line: 2px;
+  --grid-colour: hsl(215 40% 90%);
+  --grid-end: calc(var(--grid-width) + var(--grid-line));
+  --grid-gradient: transparent, transparent var(--grid-width), var(--grid-colour) var(--grid-width), var(--grid-colour) var(--grid-end);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow-y: auto;
+  color: #444;
+  font-family: 'Architects Daughter';
+  background: 
+    repeating-linear-gradient(var(--grid-gradient)), 
+    repeating-linear-gradient(to left, var(--grid-gradient));
+  font-size: 20px;
+}
+
+body {
+  --small-padding: .25em;
+  --medium-padding: .75em;
+  --large-padding: 1.5em;
+  --button-shine: linear-gradient(#ddd, #fff, #ccc);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  --edge-gradient: linear-gradient(hsl(210 80% 50%), hsl(210 70% 40%)) border-box;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: bold;
+  padding: var(--medium-padding);
+  border-radius: 100000px;
+  border: 5px solid transparent;
+  background:
+    var(--button-shine) padding-box, 
+    var(--edge-gradient);
+  transition: all .2s;
+  cursor: pointer;
+}
+button.btn-large {
+  font-size: 30px;
+  border-width: 10px;
+}
+button.btn-cancel {
+  --edge-gradient: linear-gradient(hsl(340 50% 50%), hsl(340 50% 30%)) border-box;
+}
+
+button:active {
+  background: 
+    linear-gradient(#eee, #ddd) padding-box,
+    var(--edge-gradient);
+}
+button:focus {
+  outline: 3px dashed currentColor;
+  outline-offset: -30px;
+}
+
+button.login {
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  --edge-gradient: linear-gradient(hsl(340 50% 50%), hsl(340 50% 30%)) border-box;
+}
+button.login:focus {
+  outline-offset: -3px;
+}
+
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  gap: 2em;
+  justify-content: space-around;
+  padding: 0 var(--medium-padding);
+}
+
+.modal {
+  --border-hue: 20;
+  position: fixed;
+  top: calc(-100vh - 100%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 20px;  
+  padding: var(--small-padding);
+  border: 10px solid transparent;
+  background: 
+    linear-gradient(#fff, #eee) content-box, 
+    linear-gradient(hsl(var(--border-hue) 70% 50%), hsl(var(--border-hue) 90% 30%)) padding-box, 
+    linear-gradient(#fff, #ddd) border-box;
+  box-shadow: 2px 2px 4px hsl(0 0% 0% / .3);
+  transition: all .2s;
+}
+.modal.visible {
+  top: 50%;
+}
+
+.modal form {
+  margin: var(--large-padding);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form fieldset {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: var(--medium-padding);
+  margin-bottom: var(--large-padding);
+  width: 100%;
+}
+
+form legend {
+  font-weight: bold;
+  padding: var(--medium-padding);
+}
+
+label {
+  text-align: right;
+}
+
+input, select {
+  background: none; 
+  border: none;
+  border-bottom: 2px solid currentColor;
+}
+input[type="color"] {
+  border-bottom: none;
+  cursor: pointer;
+}
+
+.toast {
+  --light-green: hsl(150 50% 90%);
+  --shadow-green: hsl(150 30% 80%);
+  --dark-green: hsl(150 50% 50%);
+  --shadow-dark-green: hsl(150 30% 30%);
+  position: fixed;
+  left: 50vw;
+  bottom: calc(100vh + 100%);
+  transform: translateX(-50%);
+  padding: var(--small-padding);
+  border: .5em solid transparent;
+  border-radius: 100000px;
+  background: 
+    linear-gradient(var(--light-green), var(--shadow-green)) content-box,
+    linear-gradient(var(--dark-green), var(--shadow-dark-green)) padding-box,
+    linear-gradient(white, var(--shadow-green)) border-box;
+  opacity: 0;
+}
+.toast-text {
+  padding: var(--medium-padding);
+}
+
+.select-envelopes {
+  background: white;
+  margin-bottom: 40px;
+  list-style-type: none;
+  border: 2px solid currentColor;
+  border-radius: 10px;
+  padding-left: 0;
+}
+
+.select-envelopes li {
+  padding: 10px 20px;
+  margin: 0;
+  align-items: center;
+}
+.select-envelopes li:not(:first-child) {
+  border-top: 1px solid currentColor;
+}
+.select-envelopes label::after {
+  content: '';
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  background: var(--envelope-colour);
+  width: 1.5em;
+  height: .8em;
+  margin-left: auto;
+}
+.select-envelopes input {
+  position: fixed;
+  left: -100vw;
+}
+.select-envelopes li:focus-within {
+  outline: 3px dashed currentColor;
+  outline-offset: -5px;
+}
+.select-envelopes label {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.select-envelopes label::before {
+  content: '✔️';
+  opacity: 0;
+}
+.select-envelopes input:checked + label::before {
+  opacity: 1;
+}
+
+.envelopes {
+  display: flex;
+}
+
+.axis {
+  color: black;
+  stroke-width: 2;
+}
+
+#balance-graph .line {
+  fill: none;
+  stroke-width: 4;
+  stroke-linejoin: round;
 }
